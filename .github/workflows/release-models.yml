@@ -1,0 +1,28 @@
+name: Release Models
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release version tag (e.g. v1.0)"
+        required: true
+        default: v1.0
+        type: string
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build model archive
+        run: |
+          mkdir -p dist
+          zip -r dist/${{ github.event.inputs.version }}.zip screenai_models/
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.event.inputs.version }}
+          name: "Models ${{ github.event.inputs.version }}"
+          files: dist/${{ github.event.inputs.version }}.zip
