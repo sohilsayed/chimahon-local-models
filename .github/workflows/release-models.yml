@@ -18,11 +18,11 @@ jobs:
       - name: Build model archive
         run: |
           mkdir -p dist
-          zip -r dist/${{ github.event.inputs.version }}.zip screenai_models/
+          zip -r dist/models.zip screenai_models/
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.event.inputs.version }}
           name: "Models ${{ github.event.inputs.version }}"
-          files: dist/${{ github.event.inputs.version }}.zip
+          files: dist/models.zip
